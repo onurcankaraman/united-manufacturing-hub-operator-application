@@ -154,7 +154,7 @@
         let target = $('#target'), good = $('#good'), reject = $('#reject');
         let totals = parseInt(good.html()) + parseInt(reject.html());
 
-        // target.html(10);
+        target.html(10);
         if(buttonName === "s"){
             if(parseInt(target.html()) === parseInt(good.html())){
                 //  || totals === parseInt(target.html())
@@ -224,8 +224,10 @@
 
     function startWork(identifier){
         if($(identifier).attr('zed') === "end"){
+            let target = $('#target'), good = $('#good'), reject = $('#reject');
+            target.html("0"); good.html("0"); reject.html("0");
             $('#selectOrder, .uBtn').removeAttr('disabled');
-            $(".sBtn, .hBtn").prop('disabled',true);
+            $(".sBtn, .hBtn, .kBtn").prop('disabled',true);
             $(identifier).removeClass('btn-danger').addClass('btn-success').html('<span class="display-4">Üretim Başlat</span>');
             $(identifier).attr('zed', 'end');
 
