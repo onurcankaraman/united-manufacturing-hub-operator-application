@@ -177,7 +177,10 @@
             headers: {"Accept":"application/json"},
             cache: false,
             url: hostUrl + 'setStateByMachine/',
-            data: {'machine': $('#selectMachine').val(), 'state': nData},
+            data: {
+                'machine': $('#selectMachine').val(), 
+                'state': nData
+            },
             method: 'post',
             success: function(data) {
                 $.toaster({ message : nData + " olarak değiştirildi!", title : 'Bilgilendirme', priority : 'danger' });
@@ -196,7 +199,7 @@
             headers: {"Accept":"application/json"},
             cache: false,
             url: hostUrl + 'startOderByMachine/',
-            data: {'machine': $('#selectMachine').val(), 'orderID': $( "#selectOrder option:selected" ).val()},
+            data: {'machine': makine, 'orderID': selectOrderID},
             method: 'post',
             success: function(data) {
                 $.toaster({ message : "İşlem başarılı!", title : 'Bilgilendirme', priority : 'success' });
@@ -242,10 +245,11 @@
     function setOrder() {
 
         x = document.getElementById('selectOrder').value
-        //console.log(orderList)
+        console.log(orderList)
 
         selectOrderText = orderList[x]["1"]
         selectOrderID = orderList[x]["0"]
+        console.log(selectOrderID)
         selectOrderTarget = orderList[x]["2"]
 
         document.getElementById('target').innerHTML = "<h3>" + selectOrderTarget + " Adet </h3>"
@@ -253,6 +257,7 @@
     }
 
     function selectOrder(makine) {
+        orderList = []
         $.ajax({
             type: 'GET',
             url: hostUrl + 'orderSelectbyMachine',
@@ -261,7 +266,7 @@
             },
             dataType: 'json',
             success: function (result) {
-                for (x = 0; x <= result.length; x++) {
+                for (x = 0; x <= result.length + 1; x++) {
                     console.log(result[x]);
                     item = document.getElementById("selectOrder");
                     option = document.createElement("option");
@@ -274,7 +279,7 @@
                 option.text = "Üretim Emri Seçiniz";
                 option.selected = "selected"
                 item.add(option);
-                orderList = result
+                
             },
             complete: function (result) {
                 // Schedule the next
