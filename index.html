@@ -135,29 +135,44 @@
 
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script type="text/javascript">
-    let hostUrl = 'http://localhost:1880/nodered/';
+    //let hostUrl = 'http://localhost:1880/nodered/';
+    let hostUrl = 'http://192.168.10.226:1880/nodered/';
     let makine = "", state = "", status = "", orderList = [], selectOrderID = "";
 
     $(document).ready(function () {
         listMachine();
-        $('.jbButton').click((e) => {
-
-        });
-
     });
 
     function jobControlBtn(identifier) {
-        var buttonName = $(identifier).data("pub");
-        alert(buttonName);
+        let buttonName = $(identifier).data("pub");
+        let target = $('#target'), good = $('#good'), reject = $('#reject');
 
+        if(buttonName === "s"){
+            if(parseInt(target.html()) > 0 && target.html() === good.html() && parseInt(good.html()) > 0){
+                alert("Eşitlendi");
+            }
+            else {
+                alert("Devam");
+            }
+        }
+        else if(buttonName === "h"){
+            alert(reject.html() + " adet hurda");
+        }
+        else if(buttonName === "k"){
+            alert(good.html() + " adet kayıt Yapıldı!");
+        }
+        else {
+            alert("NP");
+        }
     }
 
     function jbButton(identifier) {
         var nData = $(identifier).data("val");
+
         $.ajax({
             headers: {"Accept":"application/json"},
             cache: false,
-            url: hostUrl + 'test/?b=' + nData,
+            url: hostUrl + 'setStateByMachine/?machine=' + $('#selectMachine').val() + '&state=' + nData,
             method: 'post',
             success: function(data) {
                 console.log(data);
