@@ -172,7 +172,8 @@
         $.ajax({
             headers: {"Accept":"application/json"},
             cache: false,
-            url: hostUrl + 'setStateByMachine/?machine=' + $('#selectMachine').val() + '&state=' + nData,
+            data: {'machine': $('#selectMachine').val(), 'state': nData},
+            url: hostUrl + 'setStateByMachine/?',
             method: 'post',
             success: function(data) {
                 console.log(data);
