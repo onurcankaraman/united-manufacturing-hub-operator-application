@@ -43,12 +43,12 @@
                 </select>
             </div>
             <div class="row mt-1">
-                <button type="button" onclick="setOrder()" class="btn btn-primary text-center col-12 p-3"><span class="h5">Üretim Emri Seç</span></button>
+                <button type="button" onclick="setOrder()" class="uBtn btn btn-primary text-center col-12 p-3"><span class="h5">Üretim Emri Seç</span></button>
             </div>
         </div>
         <div class="col-sm">
             <div class="row mt-3">
-              <button type="button" value="10000" onclick="girisYap(this.value)" class="btn btn-success btn-block text-center mt-3 p-5 col-12"><span class="display-4">Üretim Başlat</span></button>
+              <button type="button" value="10000" class="btn btn-success btn-block text-center mt-3 p-5 col-12" onclick="startWork(this);"><span class="display-4">Üretim Başlat</span></button>
             </div>
         </div>
         <div class="col-sm m-2">
@@ -66,13 +66,13 @@
             </div>
             <div class="row mt-1">
                 <div class="col">
-                    <button type="button" class="btn btn-success text-center col-12 p-4" onclick="jobControlBtn(this);" data-pub="s"><span class="h6">Sağlam Parça</span></button>
+                    <button type="button" class="sBtn btn btn-success text-center col-12 p-4" onclick="jobControlBtn(this);" data-pub="s" disabled><span class="h6">Sağlam Parça</span></button>
                 </div>
                 <div class="col">
-                    <button type="button" class="btn btn-danger text-center col-12 p-4" onclick="jobControlBtn(this);" data-pub="h"><span class="h6">Hurda/Fire Parça</span></button>
+                    <button type="button" class="hBtn btn btn-danger text-center col-12 p-4" onclick="jobControlBtn(this);" data-pub="h" disabled><span class="h6">Hurda/Fire Parça</span></button>
                 </div>
                 <div class="col">
-                    <button type="button" class="btn btn-warning text-center col-12 p-4" onclick="jobControlBtn(this);" data-pub="k"><span class="h6">Kayıt Et</span></button>
+                    <button type="button" class="kBtn btn btn-warning text-center col-12 p-4" onclick="jobControlBtn(this);" data-pub="k" disabled><span class="h6">Kayıt Et</span></button>
                 </div>
             </div>
         </div>
@@ -176,11 +176,30 @@
         $.ajax({
             headers: {"Accept":"application/json"},
             cache: false,
-            url: hostUrl + 'setStateByMachine/?',
+            url: hostUrl + 'setStateByMachine/',
             data: {'machine': $('#selectMachine').val(), 'state': nData},
             method: 'post',
             success: function(data) {
                 $.toaster({ message : nData + " olarak değiştirildi!", title : 'Bilgilendirme', priority : 'danger' });
+                console.log(data);
+            }
+        });
+
+    }
+
+    function startWork(identifier){
+        $('#selectOrder, .uBtn').prop('disabled',true);
+        $(".sBtn, .hBtn").removeAttr('disabled');
+        $(identifier).removeClass('btn-success').addClass('btn-danger').html('<span class="display-4">Üretimi Bitir</span>');
+
+        $.ajax({
+            headers: {"Accept":"application/json"},
+            cache: false,
+            url: hostUrl + 'startOderByMachine/',
+            data: {'machine': $('#selectMachine').val(), 'orderID': $( "#selectOrder option:selected" ).val()},
+            method: 'post',
+            success: function(data) {
+                $.toaster({ message : "İşlem başarılı!", title : 'Bilgilendirme', priority : 'success' });
                 console.log(data);
             }
         });
