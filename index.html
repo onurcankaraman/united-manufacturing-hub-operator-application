@@ -164,7 +164,13 @@
             }
         }
         else if(buttonName === "h"){
-            $.toaster({ message : reject.html() + " adet hurda", title : 'Bilgilendirme', priority : 'info' });
+            if(parseInt(reject.html()) === parseInt(target.html())){
+                $.toaster({ message : 'Daha fazla Hurda Parça Çıkarılamaz!', title : 'Bilgilendirme', priority : 'warning' });
+            }
+            else {
+                reject.html(parseInt(reject.html()) + 1);
+                $.toaster({ message : reject.html() + " adet hurda", title : 'Bilgilendirme', priority : 'info' });
+            }
         }
         else if(buttonName === "k"){
             $.ajax({
@@ -172,7 +178,7 @@
                 cache: false,
                 url: hostUrl + 'countByMachine/',
                 data: {
-                    'machine': $('#selectMachine').val(),
+                    'machine': makine,
                     'total': parseInt(good.html()) + parseInt(reject.html()),
                     'hurda': reject.html()
                 },
@@ -270,7 +276,7 @@
         console.log(selectOrderID)
         selectOrderTarget = orderList[x]["2"]
 
-        document.getElementById('target').innerHTML = '"<h3><span id="target">' + selectOrderTarget + '</span> Adet </h3>'
+        document.getElementById('target').innerHTML = '<span id="target">' + selectOrderTarget + '</span>'
         document.getElementById('productPart').innerHTML = "<h3>" + selectOrderText + " Üretimine Aşağıdan Başlayabilirsin </h3>"
     }
 
