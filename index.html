@@ -50,7 +50,7 @@
         </div>
         <div class="col-sm">
             <div class="row mt-3">
-              <button type="button" value="10000" class="btn btn-success btn-block text-center mt-3 p-5 col-12" onclick="startWork(this);"><span class="display-4">Üretim Başlat</span></button>
+              <button type="button" value="10000" class="btn btn-success btn-block text-center mt-3 p-5 col-12" onclick="startWork(this);" data-zed="start"><span class="display-4">Üretim Başlat</span></button>
             </div>
         </div>
         <div class="col-sm m-2">
@@ -191,6 +191,7 @@
                 },
                 method: 'post',
                 success: function(data) {
+                    target.html("0"); good.html("0"); reject.html("0");
                     $.toaster({ message : good.html() + " adet kayıt Yapıldı!", title : 'Bilgilendirme', priority : 'success' });
                     console.log(data);
                 }
@@ -222,21 +223,42 @@
     }
 
     function startWork(identifier){
-        $('#selectOrder, .uBtn').prop('disabled',true);
-        $(".sBtn, .hBtn").removeAttr('disabled');
-        $(identifier).removeClass('btn-success').addClass('btn-danger').html('<span class="display-4">Üretimi Bitir</span>');
+        if($(identifier).attr('zed') === "end"){
+            $('#selectOrder, .uBtn').removeAttr('disabled');
+            $(".sBtn, .hBtn").prop('disabled',true);
+            $(identifier).removeClass('btn-danger').addClass('btn-success').html('<span class="display-4">Üretim Başlat</span>');
+            $(identifier).attr('zed', 'end');
 
-        $.ajax({
-            headers: {"Accept":"application/json"},
-            cache: false,
-            url: hostUrl + 'startOderByMachine/',
-            data: {'machine': makine, 'orderID': selectOrderID},
-            method: 'post',
-            success: function(data) {
-                $.toaster({ message : "İşlem başarılı!", title : 'Bilgilendirme', priority : 'success' });
-                console.log(data);
-            }
-        });
+            $.ajax({
+                headers: {"Accept":"application/json"},
+                cache: false,
+                url: hostUrl + 'endOderByMachine/',
+                data: {'machine': makine, 'orderID': selectOrderID},
+                method: 'post',
+                success: function(data) {
+                    $.toaster({ message : "İşlem başarılı!", title : 'Bilgilendirme', priority : 'success' });
+                    console.log(data);
+                }
+            });
+        }
+        else {
+            $.ajax({
+                headers: {"Accept":"application/json"},
+                cache: false,
+                url: hostUrl + 'startOderByMachine/',
+                data: {'machine': makine, 'orderID': selectOrderID},
+                method: 'post',
+                success: function(data) {
+                    $.toaster({ message : "İşlem başarılı!", title : 'Bilgilendirme', priority : 'success' });
+                    console.log(data);
+                }
+            });
+
+            $(identifier).attr('zed', 'end');
+            $('#selectOrder, .uBtn').prop('disabled',true);
+            $(".sBtn, .hBtn").removeAttr('disabled');
+            $(identifier).removeClass('btn-success').addClass('btn-danger').html('<span class="display-4">Üretimi Bitir</span>');
+        }
 
     }
 
