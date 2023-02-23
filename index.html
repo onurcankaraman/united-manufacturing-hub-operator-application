@@ -156,23 +156,8 @@
     function listMachine() {
         $.ajax({
             type: 'GET',
-<<<<<<< Updated upstream
-            url: 'http://192.168.10.226:1880/nodered/listMachine',
-            success: function (result) {
-                for (x = 0; x < result.length; x++) {
-                    console.log();
-                    item = document.getElementById("selectMachine");
-                    option = document.createElement("option");
-                    option.value = result[x];
-                    option.text = result[x];
-                    item.add(option);
-                }
-                option.value = "";
-                option.text = "Makine Seçiniz";
-                option.selected = "selected"
-=======
             //url: 'http://192.168.10.226:1880/nodered/listMachine',
-            url: 'http://localhost:1880/nodered/listMachine',
+            url: hostUrl + 'listMachine',
             success: function(result) {
               for (x=0; x<result.length; x++){
                 console.log();
@@ -180,8 +165,8 @@
                 option = document.createElement("option");
                 option.value = result[x];
                 option.text = result[x];
->>>>>>> Stashed changes
                 item.add(option);
+              }
             },
             complete: function (result) {
                 // Schedule the next
@@ -189,14 +174,6 @@
         });
     }
 
-<<<<<<< Updated upstream
-    function selectMachine() {
-        makine = document.getElementById("selectMachine").value;
-        console.log(makine)
-        selectOrder(makine)
-        doAjax();
-    }
-=======
   function selectMachine(){
     makine = document.getElementById("selectMachine").value;
     console.log(makine)
@@ -204,17 +181,11 @@
     selectOrder(makine)
     doAjax();
   }
->>>>>>> Stashed changes
 
     function setState(state) {
         document.getElementById('state').innerHTML = "<h4>" + state + "</h4>"
     }
 
-<<<<<<< Updated upstream
-    function setOrder() {
-        x = document.getElementById('selectOrder').value
-        //console.log(orderList)
-=======
   function setOrder(){
    
     x = document.getElementById('selectOrder').value
@@ -227,21 +198,12 @@
     document.getElementById('target').innerHTML = "<h3>" + selectOrderTarget + " Adet </h3>"
     document.getElementById('productPart').innerHTML = "<h3>" + selectOrderText + " Üretimine Aşağıdan Başlayabilirsin </h3>"
   }
->>>>>>> Stashed changes
-
-        selectOrderText = orderList[x]["1"]
-        selectOrderID = orderList[x]["0"]
-        selectOrderTarget = orderList[x]["2"]
-
-        document.getElementById('target').innerHTML = "<h3>" + selectOrderTarget + " Adet </h3>"
-        document.getElementById('productPart').innerHTML = "<h3>" + selectOrderText + " Üretimine Aşağıdan Başlayabilirsin </h3>"
-    }
 
     function selectOrder(makine) {
         $.ajax({
             type: 'GET',
             //url: 'http://192.168.10.226:1880/nodered/orderSelectbyMachine',
-            url: 'http://localhost:1880/nodered/orderSelectbyMachine',
+            url: hostUrl + 'orderSelectbyMachine',
             data: {
                 "machine": makine,
             },
@@ -279,7 +241,7 @@
         $.ajax({
             type: 'GET',
             //url: 'http://192.168.10.226:1880/nodered/checkMachineState',
-            url: 'http://localhost:1880/nodered/checkMachineState',
+            url: hostUrl + 'checkMachineState',
             data: {
                 "machine": makine,
             },
