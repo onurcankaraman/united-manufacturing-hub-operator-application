@@ -156,14 +156,16 @@
 
         // target.html(10);
         if(buttonName === "s"){
-            if(parseInt(target.html()) === parseInt(good.html()) || totals === parseInt(target.html())){
+            if(parseInt(target.html()) === parseInt(good.html())){
+                //  || totals === parseInt(target.html())
                 $('.sBtn, .hBtn').prop('disabled',true); $('.kBtn').removeAttr('disabled');
                 $.toaster({ message : 'Eşitlendi', title : 'Bilgilendirme', priority : 'warning' });
             }
             else {
                 good.html(parseInt(good.html()) + 1);
                 $.toaster({ message : 'Devam', title : 'Bilgilendirme', priority : 'info' });
-                if(parseInt(target.html()) === parseInt(good.html()) || totals === parseInt(target.html())){
+                if(parseInt(target.html()) === parseInt(good.html())){
+                    // || totals === parseInt(target.html())
                     $('.sBtn, .hBtn').prop('disabled',true); $('.kBtn').removeAttr('disabled');
                 }
             }
