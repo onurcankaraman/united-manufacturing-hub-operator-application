@@ -135,7 +135,10 @@
 
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script type="text/javascript">
-    //let hostUrl = 'http://localhost:1880/nodered/';
+    /*
+     * let hostUrl = 'http://localhost:1880/nodered/';
+     */
+
     let hostUrl = 'http://192.168.10.226:1880/nodered/';
     let makine = "", state = "", status = "", orderList = [], selectOrderID = "";
 
@@ -172,8 +175,8 @@
         $.ajax({
             headers: {"Accept":"application/json"},
             cache: false,
-            data: {'machine': $('#selectMachine').val(), 'state': nData},
             url: hostUrl + 'setStateByMachine/?',
+            data: {'machine': $('#selectMachine').val(), 'state': nData},
             method: 'post',
             success: function(data) {
                 console.log(data);
