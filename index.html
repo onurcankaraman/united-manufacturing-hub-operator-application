@@ -134,6 +134,7 @@
 </body>
 
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" src="http://scottoffen.github.io/jquery.toaster/jquery.toaster.js"></script>
 <script type="text/javascript">
     /*
      * let hostUrl = 'http://localhost:1880/nodered/';
@@ -152,20 +153,20 @@
 
         if(buttonName === "s"){
             if(parseInt(target.html()) > 0 && target.html() === good.html() && parseInt(good.html()) > 0){
-                alert("Eşitlendi");
+                $.toaster({ message : 'Eşitlendi', title : 'Bilgilendirme', priority : 'warning' });
             }
             else {
-                alert("Devam");
+                $.toaster({ message : 'Devam', title : 'Bilgilendirme', priority : 'info' });
             }
         }
         else if(buttonName === "h"){
-            alert(reject.html() + " adet hurda");
+            $.toaster({ message : reject.html() + " adet hurda", title : 'Bilgilendirme', priority : 'info' });
         }
         else if(buttonName === "k"){
-            alert(good.html() + " adet kayıt Yapıldı!");
+            $.toaster({ message : good.html() + " adet kayıt Yapıldı!", title : 'Bilgilendirme', priority : 'success' });
         }
         else {
-            alert("NP");
+            $.toaster({ message : "Nope!", title : 'Bilgilendirme', priority : 'danger' });
         }
     }
 
@@ -179,6 +180,7 @@
             data: {'machine': $('#selectMachine').val(), 'state': nData},
             method: 'post',
             success: function(data) {
+                $.toaster({ message : nData + " olarak değiştirildi!", title : 'Bilgilendirme', priority : 'danger' });
                 console.log(data);
             }
         });
