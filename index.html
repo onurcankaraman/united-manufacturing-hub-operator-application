@@ -30,7 +30,9 @@
         </div>
         <div class="col-sm">
             <label for="selectMachine" class="d-none"></label>
-            <select class="form-select" id="selectMachine" onchange="selectMachine()"></select>
+            <select class="form-select" id="selectMachine" onchange="selectMachine()">
+                <option value="0" hidden="">Lütfen Buradan Seçim Yapınız</option>
+            </select>
         </div>
     </div>
     <div class="row border-top border-1 border-secondary ">
@@ -39,7 +41,7 @@
             <div class="row mt-1 mb-3">
                 <label for="selectOrder" class="d-none"></label>
                 <select class="form-select" id="selectOrder">
-                    <option value="0" hidden="">Üretim Emri Seç</option>
+                    <option value="0" hidden="">Buradan Üretim Emri Seçiniz</option>
                 </select>
             </div>
             <div class="row mt-1">
@@ -152,10 +154,12 @@
         let target = $('#target'), good = $('#good'), reject = $('#reject');
 
         if(buttonName === "s"){
-            if(parseInt(target.html()) > 0 && target.html() === good.html() && parseInt(good.html()) > 0){
+            if(parseInt(target.html()) === parseInt(good.html())){
+                $('.sBtn, .hBtn').prop('disabled',true); $('.kBtn').removeAttr('disabled');
                 $.toaster({ message : 'Eşitlendi', title : 'Bilgilendirme', priority : 'warning' });
             }
             else {
+                good.html(parseInt(good.html()) + 1);
                 $.toaster({ message : 'Devam', title : 'Bilgilendirme', priority : 'info' });
             }
         }
@@ -163,7 +167,21 @@
             $.toaster({ message : reject.html() + " adet hurda", title : 'Bilgilendirme', priority : 'info' });
         }
         else if(buttonName === "k"){
-            $.toaster({ message : good.html() + " adet kayıt Yapıldı!", title : 'Bilgilendirme', priority : 'success' });
+            $.ajax({
+                headers: {"Accept":"application/json"},
+                cache: false,
+                url: hostUrl + 'countByMachine/',
+                data: {
+                    'machine': $('#selectMachine').val(),
+                    'total': parseInt(good.html()) + parseInt(reject.html()),
+                    'hurda': reject.html()
+                },
+                method: 'post',
+                success: function(data) {
+                    $.toaster({ message : good.html() + " adet kayıt Yapıldı!", title : 'Bilgilendirme', priority : 'success' });
+                    console.log(data);
+                }
+            });
         }
         else {
             $.toaster({ message : "Nope!", title : 'Bilgilendirme', priority : 'danger' });
@@ -252,7 +270,7 @@
         console.log(selectOrderID)
         selectOrderTarget = orderList[x]["2"]
 
-        document.getElementById('target').innerHTML = "<h3>" + selectOrderTarget + " Adet </h3>"
+        document.getElementById('target').innerHTML = '"<h3><span id="target">' + selectOrderTarget + '</span> Adet </h3>'
         document.getElementById('productPart').innerHTML = "<h3>" + selectOrderText + " Üretimine Aşağıdan Başlayabilirsin </h3>"
     }
 
